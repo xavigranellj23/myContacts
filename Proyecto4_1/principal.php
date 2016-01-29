@@ -7,7 +7,6 @@
 //sentencia SQL que devuelve, todo junto, las actividades ordenadas por fecha, con el tipo de actividad y el número de reservas
 $sql_contactos = "SELECT * FROM tbl_contactos WHERE $_SESSION[id] = id_usuario";
 
-
 ?>
 <!--INICIO WEB -->
 <!DOCTYPE html>
@@ -72,7 +71,7 @@ $sql_contactos = "SELECT * FROM tbl_contactos WHERE $_SESSION[id] = id_usuario";
                       <p id="formTituloMaterial"><?php echo utf8_encode($mostrar['nombre_cont']);?> <?php echo utf8_encode($mostrar['apellido_cont']); ?><p>
                       <p><?php echo utf8_encode($mostrar['mail_cont']); ?><p>
                       <p><?php echo utf8_encode($mostrar['mobil_cont']); ?><p>
-                      <p><a href='contacto.php?id_contacto=$_SESSION[id]'>Ver Contacto</a><p>
+                      <p><a href='contacto.php' <?php $_SESSION['id_contacto']='id_contacto'?>>Ver Contacto</a><p>
                     </div>
                   </div><br/>
                 </form>

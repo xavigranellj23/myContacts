@@ -24,6 +24,7 @@
 		$_SESSION['nombre']=$datos_usuario['nombre_usu'];
 		$_SESSION['nivel']=$datos_usuario['id_tipo_usuario'];
 
+
 		//redirigimos a la página principal
 		header("location: principal.php");
 	} else {

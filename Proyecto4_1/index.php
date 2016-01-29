@@ -25,8 +25,9 @@
     </style>
 
 	</head>
-	<body>
-	<div class="container" style="margin-top:150px;">
+	<body background="img/bg.jpg">
+  
+	<div class="container" style="margin-top:150px;"><img  style="margin-left:40%;" src="img/logo.png">
     <div class="row">
       <div class="col-md-4 col-md-offset-4">
         <div class="panel panel-default">

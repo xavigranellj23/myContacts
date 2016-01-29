@@ -1,3 +1,4 @@
+
 <?php
   //iniciamos sesión - SIEMPRE TIENE QUE ESTAR EN LA PRIMERA LÍNEA
   session_start();
@@ -5,57 +6,42 @@
   include("conexion.proc.php");
 
 //sentencia SQL que devuelve, todo junto, las actividades ordenadas por fecha, con el tipo de actividad y el número de reservas
-$sql_perfil = "SELECT * FROM tbl_contactos WHERE $_SESSION[id] = id_contacto";
+$sql_perfil = "SELECT * FROM tbl_contactos WHERE $_SESSION[id_contacto]=id_contacto";
 
 
 ?>
-<!--INICIO WEB -->
+
+
 <!DOCTYPE html>
 <html>
-  <head>
-      <title>Oxford Intranet</title>
-      <meta lang="es">
-      <meta charset="utf-8">
-      <meta name="author">
-      <link rel="icon" type="image/png" href="img/icon.png">
-      <link rel="stylesheet" type="text/css" href="css/estilo.css" media="screen" />
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-      <script type="text/javascript" src="js/funcion.js"></script>
-  </head>
-    <body>
-
-<a name="top">
-        <!--BARRA NEGRA SUPERIOR -->
-      <div id="barraNegra">
-        <div id="barraLogin">
-          <ul id="listaLogin">
-            <li id="identificate">Hola <?php echo $_SESSION['nombre']?> </li>
-            <li><a href="salir.php"><img src="img/exit.png" alt="Salir" title="Salir" /></a></li>
-          </ul>
-        </div>
-      </div>
-
-        <!--BARRA DE MENÚ -->
-      <header>
-        <section id="cabecera">
-          <figure>
-            <a href="principal.php"><img src="img/logoMyContacts.png"/></a>
-          </figure>
-
-          <nav>
-            <ul>
-
-              <a href='principal.php'><li>Volver sin Guardar</li></a>
- 
-            </ul>
-          </nav>
-        </section>
-      </header>
-
+    <head>
       
+     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script type="text/javascript" src="js/google-map.js"></script>
+<script type="text/javascript">
+  add_action('template_redirect','carga_archivos');
+ 
+function carga_archivos(){
+     
+    if( is_single(9999)) // tu número de post o slug
+    {
+        wp_enqueue_script( 'google-api','http://maps.googleapis.com/maps/api/js?key=TU CLAVEAPI&sensor=true', array( 'jquery' ) );
+        wp_enqueue_script( 'google-maps',get_bloginfo('stylesheet_directory') . '/js/google-map.js', array( 'google-api' ) );
+    }
+}
+</script>
 
-      <main><br/>
-<?php
+    <title>Registro</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    </head>
+    <body>
+      <?php
 //sentencia SQL que devuelve, todo junto, las actividades ordenadas por fecha, con el tipo de actividad y el número de reservas
 
 
@@ -65,38 +51,74 @@ $sql_perfil = "SELECT * FROM tbl_contactos WHERE $_SESSION[id] = id_contacto";
               if(mysqli_num_rows($datos)!=0){
                 while ($mostrar = mysqli_fetch_array($datos)) {
             ?>
+    
+<div class="container" style="margin-top:150px;">
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Modificar Contacto</h3>
+        </div>
+          <div class="panel-body">
+            <form accept-charset="UTF-8" role="form" method="POST" action="modificarcontactos.proc.php">
+                    <fieldset>
+                <div class="form-group">
+                  <input type="form-control" name="nom" size="15" maxlength="25" value="<?php echo $mostrar['nombre_cont']; ?>">
+              </div> 
+              <div class="form-group">
+                  <input type="form-control" name="ape" size="15" maxlength="25" value="<?php echo $mostrar['apellido_cont']; ?>">
+              </div>    
 
-<section id="centro">
-            <div id="divMaterialReserva">
-            <table>
-                  <tr>
-                    <td><b>Nombre:</b></td>
-                    <td><b>Apellido:</b></td>
-                    <td><b>Mail:</b></td>
-                    <td><b>Teléfono:</b></td>
-                    <td><b>Móbil:</b></td>
-                    <td></td>
+                <div class="form-group">
+                  <input type="form-control" name="mail" size="15" maxlength="25" value="<?php echo $mostrar['mail_cont']; ?>">
+              </div>
+              <div class="form-group">
+                  <input type="form-control" name="tel" size="15" maxlength="25" value="<?php echo $mostrar['tel_cont']; ?>">
+              </div>
 
-                  </tr>
-                  <tr>
-                    <td style="width:300px"> <br/><?php echo $mostrar['nombre_cont']; ?><br/></td>
-                    <td style="width:300px"><br/><?php echo $mostrar['apellido_cont']; ?><br/></td>
-                    <td style="width:300px"><br/><?php echo $mostrar['mail_cont']; ?><br/></td>
-                    <td style="width:300px"><br/><?php echo $mostrar['tel_cont']; ?><br/></td>
-                    <td style="width:300px"><br/><?php echo $mostrar['mobil_cont']; ?><br/></td>
-                    <td style="width:300px"><br/><?php echo "<a href='modificarperfil.proc.php?id=$mostrar[id_usuario]'><i class='fa fa-pencil fa-2x fa-pull-left fa-border' title='Modificar'></i></a>"; ?></td>
-                  </tr>
+              <div class="form-group">
+                  <input type="form-control" name="movil" size="15" maxlength="25" value="<?php echo $mostrar['mobil_cont']; ?>">
+              </div>
 
-                </table>
-                </div>
-                
-                <?php
+              
+                <div class="right">
+               <form id="google" name="google" action="#">
+ 
+                  <input type="form-control" name="dir" size="15" maxlength="25" value="<?php echo $mostrar['dir_cont']; ?>">
+        <button class="btn btn-lg btn-success btn-block" id="pasar">Buscar</button>
+         
+        <!-- div donde se dibuja el mapa-->
+        <br><br>
+        <div id="map_canvas" style="width:320px;height:250px;"></div><br><br>
+
+         
+        <!--campos ocultos donde guardamos los datos-->
+         <input type="hidden" name="lat" id="lat"/><br><br>
+        <input type="hidden" name="lng" id="long"/>
+        </div>
+        
+
+
+              <input class="btn btn-lg btn-success btn-block" type="submit" value="Modificar Contacto">
+            </fieldset>
+              </form>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+  </table>
+
+    </body>
+    <?php
                 }
               }else{
                 echo "No hay datos";
               }
             ?>
-          </section>
-        </main>
-    </body>
 </html>
